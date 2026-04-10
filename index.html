@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Study Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: Arial;
+  background: #eef2f7;
+  padding: 15px;
+}
+
+.container {
+  max-width: 500px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+}
+
+select, input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 6px;
+  background: #3498db;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #2980b9;
+}
+
+.output {
+  margin-top: 15px;
+  padding: 10px;
+  background: #f1f1f1;
+  border-radius: 6px;
+  white-space: pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>📚 Study Tracker</h2>
+
+<!-- Day Selection -->
+<select id="day" onchange="updateSubjects()">
+  <option value="">Select Day</option>
+  <option>Friday</option>
+  <option>Saturday</option>
+  <option>Sunday</option>
+  <option>Monday</option>
+  <option>Tuesday</option>
+</select>
+
+<!-- Subject + Teacher -->
+<select id="subject">
+  <option value="">Select Subject</option>
+</select>
+
+<input type="text" id="topic" placeholder="Topic Completed">
+<textarea id="task" placeholder="Task Given"></textarea>
+<textarea id="comment" placeholder="Comment"></textarea>
+
+<button onclick="generate()">Generate Report</button>
+<button onclick="copyText()">Copy & Share</button>
+
+<div class="output" id="output"></div>
+
+</div>
+
+<script>
+const data = {
+  "Friday": [
+    "IPR (Sunita Banerjee)",
+    "Competition Law (Gargi Mukherjee)",
+    "Labour Law-I (Sushmita Bose)",
+    "Political Science-VI (SK Mofijuddin)",
+    "IPR (Solanki Sarkar)"
+  ],
+  "Saturday": [
+    "Company Law (Dipanjana Mitra)",
+    "IPR (Solanki Sarkar)",
+    "Labour Law-I (Pushpa Kusum)",
+    "Competition Law (Gargi Mukherjee)",
+    "IPR (Sunita Banerjee)"
+  ],
+  "Sunday": [
+    "IPR (Sunita Banerjee)",
+    "Competition Law (Gargi Mukherjee)",
+    "Political Science-VI (Mohammad Uzair)"
+  ],
+  "Monday": [
+    "Political Science-VI (SK Mofijuddin)",
+    "Labour Law-I (Pushpa Kusum)",
+    "Competition Law (Gargi Mukherjee)",
+    "Company Law (Surjendu Bose)",
+    "IPR (Solanki Sarkar)"
+  ],
+  "Tuesday": [
+    "Labour Law-I (Sushmita Bose)",
+    "Company Law (Dipanjana Mitra)",
+    "Competition Law (Gargi Mukherjee)",
+    "IPR (Sunita Banerjee)"
+  ]
+};
+
+function updateSubjects() {
+  let day = document.getElementById("day").value;
+  let subjectDropdown = document.getElementById("subject");
+
+  subjectDropdown.innerHTML = '<option value="">Select Subject</option>';
+
+  if (data[day]) {
+    data[day].forEach(item => {
+      let option = document.createElement("option");
+      option.text = item;
+      subjectDropdown.add(option);
+    });
+  }
+}
+
+function generate() {
+  let day = document.getElementById("day").value;
+  let subject = document.getElementById("subject").value;
+  let topic = document.getElementById("topic").value;
+  let task = document.getElementById("task").value;
+  let comment = document.getElementById("comment").value;
+
+  let date = new Date().toLocaleDateString();
+
+  let result = 
+`📅 Date: ${date}
+📆 Day: ${day}
+
+📚 ${subject}
+✅ Topic Completed: ${topic}
+📝 Task Given: ${task}
+💬 Comment: ${comment}`;
+
+  document.getElementById("output").innerText = result;
+}
+
+function copyText() {
+  let text = document.getElementById("output").innerText;
+
+  if (!text) {
+    alert("Generate report first!");
+    return;
+  }
+
+  navigator.clipboard.writeText(text);
+  alert("Copied! Send it 🚀");
+}
+</script>
+
+</body>
+</html>
